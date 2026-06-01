@@ -62,7 +62,7 @@ function generatePDF(emp, records, projects, month, year) {
   const rows = records.map(r => {
     const { normal, extra, total } = calcExtra(r.entry, r.exit); tN += normal; tE += extra;
     const proj = projects.find(p => p.id === r.projectId);
-    return `<tr><td>${r.date}</td><td>${r.entry}</td><td>${r.exit}</td><td>${toHrs(total)}</td><td>${toHrs(normal)}</td><td style="color:${extra > 0 ? "#d60006" : "#16a34a"};font-weight:700">${toHrs(extra)}</td><td>${proj?.name || "-"}</td><td>${r.location === "external" ? "Externo" : "Oficina"}</td></tr>`;
+    return `<tr><td>${r.date}</td><td>${r.entry}</td><td>${r.exit}</td><td>${toHrs(total)}</td><td>${toHrs(normal)}</td><td style="color:${extra > 0 ? "#d60006" : "#16a34a"};font-weight:700">${toHrs(extra)}</td><td>${proj?.name || "-"}</td><td>${r.location === "external" ? "Externo" : "Escritório"}</td></tr>`;
   }).join("");
   const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório</title>
   <style>body{font-family:Arial,sans-serif;padding:32px;color:#111}h1{color:#d60006}h2{color:#005da8;font-size:16px;margin-bottom:24px}.sum{display:flex;gap:20px;margin-bottom:24px}.s{border-radius:10px;padding:16px 22px;color:#fff;min-width:130px}.s1{background:#005da8}.s2{background:#d60006}.s3{background:#16a34a}.sn{font-size:28px;font-weight:800}.sl{font-size:12px;margin-top:2px;opacity:.85}table{width:100%;border-collapse:collapse;font-size:13px}th{background:#f5f5f5;padding:9px 10px;text-align:left;border-bottom:2px solid #e5e7eb;color:#6b7280;font-size:12px}td{padding:9px 10px;border-bottom:1px solid #e5e7eb}.foot{margin-top:32px;font-size:12px;color:#6b7280;border-top:1px solid #e5e7eb;padding-top:12px}</style>
@@ -143,7 +143,7 @@ function LoginPage() {
           <div style={{ width:64, height:64, borderRadius:20, background:`linear-gradient(135deg, ${P}, #ff3333)`, display:"inline-flex", alignItems:"center", justifyContent:"center", marginBottom:16, boxShadow:`0 8px 24px ${P}55` }}>
             <span style={{ fontSize:28 }}>⏱</span>
           </div>
-          <div style={{ fontSize:26, fontWeight:800, color:DARK }}>TimeTrack</div>
+          <div style={{ fontSize:26, fontWeight:800, color:DARK }}>Ponto Pronto</div>
           <div style={{ fontSize:14, color:GRAY, marginTop:4 }}>Sistema de Marcação de Horas</div>
         </div>
         {err && <Alert type="error">⚠️ {err}</Alert>}
@@ -180,7 +180,7 @@ function EmpDashboard({ user, records, projects }) {
         <div style={{ fontSize:15, fontWeight:700, marginBottom:16 }}>📅 Hoje — {today}</div>
         {todayRec ? (
           <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
-            {[["🟢 Entrada", todayRec.entry], ["🔴 Saída", todayRec.exit], ["📍 Local", todayRec.location === "external" ? "Externo" : "Oficina"], ["📁 Projeto", projects.find(p => p.id === todayRec.projectId)?.name || "-"]].map(([l, v]) => (
+            {[["🟢 Entrada", todayRec.entry], ["🔴 Saída", todayRec.exit], ["📍 Local", todayRec.location === "external" ? "Externo" : "Escritório"], ["📁 Projeto", projects.find(p => p.id === todayRec.projectId)?.name || "-"]].map(([l, v]) => (
               <div key={l} style={{ background:LIGHT, borderRadius:10, padding:"12px 16px", minWidth:110 }}>
                 <div style={{ fontSize:11, fontWeight:600, color:GRAY, marginBottom:4 }}>{l}</div>
                 <div style={{ fontWeight:700, fontSize:15 }}>{v}</div>
@@ -202,7 +202,7 @@ function EmpDashboard({ user, records, projects }) {
             return <tr key={r.id} className="table-row">
               <TD>{r.date}</TD><TD>{r.entry}</TD><TD>{r.exit}</TD><TD>{toHrs(total)}</TD>
               <TD><span style={{ color:extra>0?P:"#16a34a", fontWeight:700 }}>{toHrs(extra)}</span></TD>
-              <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Oficina"}</Badge></TD>
+              <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Escritório"}</Badge></TD>
               <TD>{projects.find(p => p.id === r.projectId)?.name || "-"}</TD>
             </tr>;
           })}</tbody>
@@ -288,7 +288,7 @@ function EmpHistory({ records, projects }) {
             return <tr key={r.id} className="table-row">
               <TD>{r.date}</TD><TD>{r.entry}</TD><TD>{r.exit}</TD><TD>{toHrs(total)}</TD><TD>{toHrs(normal)}</TD>
               <TD><span style={{ color:extra>0?P:"#16a34a", fontWeight:700 }}>{toHrs(extra)}</span></TD>
-              <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Oficina"}</Badge></TD>
+              <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Escritório"}</Badge></TD>
               <TD>{projects.find(p => p.id === r.projectId)?.name || "-"}</TD>
             </tr>;
           })}
@@ -437,7 +437,7 @@ function AdminRecords({ allRecords, projects, allUsers }) {
               </div></TD>
               <TD>{r.date}</TD><TD>{r.entry}</TD><TD>{r.exit}</TD><TD>{toHrs(normal)}</TD>
               <TD><span style={{ color:extra>0?P:"#16a34a", fontWeight:700 }}>{toHrs(extra)}</span></TD>
-              <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Oficina"}</Badge></TD>
+              <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Escritório"}</Badge></TD>
               <TD>{projects.find(p => p.id===r.projectId)?.name||"—"}</TD>
             </tr>;
           })}
@@ -542,12 +542,67 @@ function AdminReports({ allRecords, projects, allUsers }) {
               return <tr key={r.id} className="table-row">
                 <TD>{r.date}</TD><TD>{r.entry}</TD><TD>{r.exit}</TD><TD>{toHrs(normal)}</TD>
                 <TD><span style={{ color:extra>0?P:"#16a34a", fontWeight:700 }}>{toHrs(extra)}</span></TD>
-                <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Oficina"}</Badge></TD>
+                <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Escritório"}</Badge></TD>
                 <TD>{projects.find(p => p.id===r.projectId)?.name||"—"}</TD>
               </tr>;
             })}</tbody>
           </table>
           <Btn variant="primary" onClick={() => generatePDF(emp, filtered, projects, selMonth, selYear)}>🖨 Imprimir / Exportar PDF</Btn>
+        </> : <div style={{ color:GRAY, fontSize:14, padding:"20px", background:LIGHT, borderRadius:10, textAlign:"center" }}>ℹ️ Nenhum registo para este período.</div>}
+      </Card>
+    </div>
+  );
+}
+
+// ─── EMP REPORTS ─────────────────────────────────────────────────────────────
+function EmpReportsPage({ user, records, projects }) {
+  const [selMonth, setSelMonth] = useState(new Date().getMonth() + 1);
+  const [selYear, setSelYear] = useState(new Date().getFullYear());
+  const filtered = records.filter(r => {
+    const [y, m] = r.date.split("-");
+    return parseInt(y) === selYear && parseInt(m) === selMonth;
+  }).sort((a, b) => a.date.localeCompare(b.date));
+  const totalN = filtered.reduce((a, r) => a + calcExtra(r.entry, r.exit).normal, 0);
+  const totalE = filtered.reduce((a, r) => a + calcExtra(r.entry, r.exit).extra, 0);
+  const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  return (
+    <div>
+      <div className="fade-up" style={{ fontSize:24, fontWeight:800, marginBottom:24 }}>Meus Relatórios</div>
+      <Card>
+        <div style={{ fontSize:15, fontWeight:700, marginBottom:16 }}>Exportar Relatório Mensal</div>
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:16, marginBottom:20 }}>
+          <div>
+            <label style={{ fontSize:13, fontWeight:600, color:GRAY, marginBottom:6, display:"block" }}>Mês</label>
+            <Sel value={selMonth} onChange={e => setSelMonth(parseInt(e.target.value))}>
+              {months.map((m, i) => <option key={i} value={i+1}>{m}</option>)}
+            </Sel>
+          </div>
+          <div>
+            <label style={{ fontSize:13, fontWeight:600, color:GRAY, marginBottom:6, display:"block" }}>Ano</label>
+            <Sel value={selYear} onChange={e => setSelYear(parseInt(e.target.value))}>
+              {[2024,2025,2026].map(y => <option key={y} value={y}>{y}</option>)}
+            </Sel>
+          </div>
+        </div>
+        {filtered.length > 0 ? <>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:16, marginBottom:20 }}>
+            <StatCard num={filtered.length} label="Dias Trabalhados" color={S} icon="📅" />
+            <StatCard num={toHrs(totalN)} label="Horas Normais" color="#16a34a" icon="✅" />
+            <StatCard num={toHrs(totalE)} label="Horas Extras" color={P} icon="⚡" />
+          </div>
+          <table style={{ width:"100%", borderCollapse:"collapse", fontSize:14, marginBottom:20 }}>
+            <thead><tr>{["Data","Entrada","Saída","Normal","Extra","Local","Projeto"].map(h => <TH key={h}>{h}</TH>)}</tr></thead>
+            <tbody>{filtered.map(r => {
+              const { normal, extra } = calcExtra(r.entry, r.exit);
+              return <tr key={r.id} className="table-row">
+                <TD>{r.date}</TD><TD>{r.entry}</TD><TD>{r.exit}</TD><TD>{toHrs(normal)}</TD>
+                <TD><span style={{ color:extra>0?P:"#16a34a", fontWeight:700 }}>{toHrs(extra)}</span></TD>
+                <TD><Badge color={r.location==="external"?"blue":"green"}>{r.location==="external"?"Externo":"Oficina"}</Badge></TD>
+                <TD>{projects.find(p => p.id === r.projectId)?.name||"—"}</TD>
+              </tr>;
+            })}</tbody>
+          </table>
+          <Btn variant="primary" onClick={() => generatePDF(user, filtered, projects, selMonth, selYear)}>🖨 Imprimir / Exportar PDF</Btn>
         </> : <div style={{ color:GRAY, fontSize:14, padding:"20px", background:LIGHT, borderRadius:10, textAlign:"center" }}>ℹ️ Nenhum registo para este período.</div>}
       </Card>
     </div>
@@ -605,6 +660,7 @@ export default function App() {
     { id:"dashboard", label:"Início", icon:"🏠" },
     { id:"register", label:"Registar Horas", icon:"⏱" },
     { id:"history", label:"Meu Histórico", icon:"📋" },
+    { id:"reports", label:"Relatórios", icon:"📄" },
   ];
   const nav = isAdmin ? adminNav : empNav;
 
@@ -619,6 +675,7 @@ export default function App() {
       if (page==="dashboard") return <EmpDashboard user={userDoc} records={records} projects={projects} />;
       if (page==="register") return <EmpRegister user={userDoc} projects={projects} />;
       if (page==="history") return <EmpHistory records={records} projects={projects} />;
+      if (page==="reports") return <EmpReportsPage user={userDoc} records={records} projects={projects} />;
     }
   };
 

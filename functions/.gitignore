@@ -1,2 +1,16 @@
-node_modules/
-*.local
+# dependencies
+/node_modules
+
+# production
+/build
+
+# environment variables — NUNCA enviar para o GitHub
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# misc
+.DS_Store
+npm-debug.log*
